@@ -1,9 +1,5 @@
 import type { Component } from "solid-js";
 
-// ?
-// !
-// * Part one
-// TODO:
 const App: Component = () => {
   return (
     <div class="container mx-auto px-4">
