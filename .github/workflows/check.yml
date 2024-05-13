@@ -1,0 +1,40 @@
+name: Test the current code
+on: ["pull_request"]
+jobs:
+  check:
+    runs-on: ["ubuntu-latest"]
+    strategy:
+      matrix:
+        node:
+          [
+            lts/argon,
+            lts/boron,
+            lts/carbon,
+            lts/dubnium,
+            lts/erbium,
+            lts/fermium,
+            lts/gallium,
+            lts/hydrogen,
+            lts/iron,
+          ]
+    name: "Check and build for Node ${{ matrix.node }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm ci
+      - name: Build
+        run: npm run build
+      - name: Test
+        run: npm test
+      - name: Publish artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build (${{ matrix.node }})
+          path: |
+            dist
